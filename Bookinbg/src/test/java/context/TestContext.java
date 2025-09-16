@@ -32,5 +32,19 @@ public class TestContext {
     public int getStatusCode() {
         return statusCode;
     }
+
+
+    private long tokenExpiryTime;
+
+    public void setTokenExpiryTime(long expiresInSeconds) {
+        this.tokenExpiryTime = System.currentTimeMillis() + (expiresInSeconds * 1000);
+    }
+
+    public boolean isTokenExpired() {
+        return System.currentTimeMillis() > tokenExpiryTime;
+    }
+
+
+
 }
 
