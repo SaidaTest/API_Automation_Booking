@@ -1,63 +1,63 @@
-//package stepDefinitions;
-//
-//import io.cucumber.java.en.*;
-//import io.restassured.RestAssured;
-//import io.restassured.http.ContentType;
-//import io.restassured.response.Response;
-//import org.json.JSONObject;
-//
-//import java.nio.file.Files;
-//import java.nio.file.Paths;
-//
-//import static org.hamcrest.MatcherAssert.assertThat;
-//import static org.hamcrest.Matchers.equalTo;
-//
-//public class RoomSteps {
-//
-//    private static String token;
-//    private Response response;
-//
-//    @Given("I have a valid login token")
-//    public void i_have_a_valid_login_token() {
-//        String loginBody = "{ \"username\":\"admin\", \"password\":\"password\" }";
-//
-//        Response loginResponse = RestAssured.given()
-//                .baseUri("https://automationintesting.online")
-//                .basePath("/api/auth/login")
-//                .contentType(ContentType.JSON)
-//                .body(loginBody)
-//                .when()
-//                .post();
-//
-//        loginResponse.then().statusCode(200);
-//
-//        token = loginResponse.jsonPath().getString("token");
-//        System.out.println("Generated Token: " + token);
-//    }
-//
-//    @When("I create a room with details from {string}")
-//    public void i_create_a_room_with_details_from(String fileName) throws Exception {
-//        // Read JSON file from resources
-//        String jsonPath = "src/test/resources/testdata/" + fileName;
-//        String jsonBody = new String(Files.readAllBytes(Paths.get(jsonPath)));
-//
-//        response = RestAssured.given()
-//                .baseUri("https://automationintesting.online")
-//                .basePath("/api/room")
-//                .header("Authorization", "Bearer " + token)
-//                .contentType(ContentType.JSON)
-//                .body(jsonBody)
-//                .when()
-//                .post();
-//
-//        response.prettyPrint();
-//    }
-//
-//    @Then("the room should be created successfully")
-//    public void the_room_should_be_created_successfully() {
-//        response.then().statusCode(201);
-//
-//        String createdRoom = response.jsonPath().getString("roomName");
-//        assertThat(createdRoom, equalTo("009"));
-//    }
-//}
+package stepDefinitions;
+
+import context.TestContext;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static io.restassured.RestAssured.given;
+
+public class RoomSteps {
+
+    private final TestContext context;
+    public TokenManager tokenManager;
+
+    // ✅ Cucumber will inject this
+    public RoomSteps(TestContext context) {
+        this.context = context;
+        this.tokenManager = new TokenManager(context);
+    }
+
+    @Given("I have a valid login token")
+    public void i_have_a_valid_login_token() {
+        Response response = context.getResponse();
+        if (response == null) {
+            tokenManager.ensureToken();
+        }
+    }
+
+    @When("I send a request to create a room")
+    public void i_send_a_request_to_create_a_room() {
+        System.out.println("Token in RoomSteps: " + context.getToken()); // should print the same token
+        if (context.getToken() == null) {
+            tokenManager.ensureToken();
+        }
+        Map<String, Object> body = new HashMap<>();
+        body.put("roomName", "020");
+        body.put("type", "Single"); // ✅ correct key
+        body.put("accessible", true);
+        body.put("description", "Please enter a description for this room");
+        body.put("image", "https://www.mwtestconsultancy.co.uk/img/room1.jpg");
+        body.put("roomPrice", "250"); // ✅ must be String, not int
+        body.put("features", new String[]{"TV"});
+
+
+        Response response = given()
+                .relaxedHTTPSValidation()
+                .header("Cookie", "token=" + context.getToken())  // ✅ Add cookie as header
+                .contentType(ContentType.JSON)
+                .body(body)
+                .when()
+                .post("https://automationintesting.online/api/room");
+
+
+        context.setResponse(response);
+
+        System.out.println("Room creation status: " + response.getStatusCode());
+        System.out.println("Room creation body: " + response.getBody().asString());
+    }
+}
