@@ -1,6 +1,6 @@
 stepDefinitions\LoginSteps.class
-utilities\LoginTest.class
 runners\TestRunner.class
 utilities\ApiUtils.class
-hooks\Hooks.class
 context\TestContext.class
+utilities\LoginTest.class
+hooks\Hooks.class
