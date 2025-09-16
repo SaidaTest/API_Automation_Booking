@@ -16,7 +16,7 @@ public class RoomSteps {
 
     private final TestContext context;
     public TokenManager tokenManager;
-
+    private Response response;
     // ✅ Cucumber will inject this
     public RoomSteps(TestContext context) {
         this.context = context;
@@ -48,17 +48,20 @@ public class RoomSteps {
         room.put("roomPrice", 110);
         room.put("features", new String[]{"TV"});
 
-        Response roomResponse = RestAssured.given()
+         response = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .header("Cookie", "token=" + context.getToken()) // admin token
                 .contentType(ContentType.JSON)
                 .body(room)
                 .post("https://automationintesting.online/api/room");
 
-        int roomId = roomResponse.jsonPath().getInt("roomid");
-        System.out.println("✅ Created Room ID: " + roomId);
+        //int roomId = response.jsonPath().get("roomid");
+        Integer roomId = response.jsonPath().get("roomid");
+        if (roomId != null) {
+            System.out.println("✅ Created Room ID: " + roomId);
+        }
 
-        System.out.println("Room creation status: " + roomResponse.getStatusCode());
-        System.out.println("Room creation body: " + roomResponse.getBody().asString());
+        System.out.println("Room creation status: " + response.getStatusCode());
+        System.out.println("Room creation body: " + response.getBody().asString());
     }
 }

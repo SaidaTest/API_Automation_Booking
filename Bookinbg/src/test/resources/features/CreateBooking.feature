@@ -1,6 +1,13 @@
 @CreateBooking @hotelbookingregressiontests
 Feature: Test create a room booking
 
+  Background:
+    Given I send a login request with username "admin" and password "password"
+    Then I am checking login response should be 200
+    Then I should receive a valid token
+    Given I have a valid login token
+    When I send a request to create a room
+
 @HappyFlow
 Scenario Outline: Create a room booking
     Given user hits endpoint "api/booking"
