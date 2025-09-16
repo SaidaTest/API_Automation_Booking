@@ -3,6 +3,7 @@ package stepDefinitions;
 import context.TestContext;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
@@ -36,28 +37,28 @@ public class RoomSteps {
         if (context.getToken() == null) {
             tokenManager.ensureToken();
         }
-        Map<String, Object> body = new HashMap<>();
-        body.put("roomName", "020");
-        body.put("type", "Single"); // ✅ correct key
-        body.put("accessible", true);
-        body.put("description", "Please enter a description for this room");
-        body.put("image", "https://www.mwtestconsultancy.co.uk/img/room1.jpg");
-        body.put("roomPrice", "250"); // ✅ must be String, not int
-        body.put("features", new String[]{"TV"});
 
+        // 1️⃣ Create a room first
+        Map<String, Object> room = new HashMap<>();
+        room.put("roomName", "API-ROOM-" + System.currentTimeMillis());
+        room.put("type", "Single");
+        room.put("accessible", true);
+        room.put("description", "API created room");
+        room.put("image", "https://www.mwtestconsultancy.co.uk/img/room1.jpg");
+        room.put("roomPrice", 110);
+        room.put("features", new String[]{"TV"});
 
-        Response response = given()
+        Response roomResponse = RestAssured.given()
                 .relaxedHTTPSValidation()
-                .header("Cookie", "token=" + context.getToken())  // ✅ Add cookie as header
+                .header("Cookie", "token=" + context.getToken()) // admin token
                 .contentType(ContentType.JSON)
-                .body(body)
-                .when()
+                .body(room)
                 .post("https://automationintesting.online/api/room");
 
+        int roomId = roomResponse.jsonPath().getInt("roomid");
+        System.out.println("✅ Created Room ID: " + roomId);
 
-        context.setResponse(response);
-
-        System.out.println("Room creation status: " + response.getStatusCode());
-        System.out.println("Room creation body: " + response.getBody().asString());
+        System.out.println("Room creation status: " + roomResponse.getStatusCode());
+        System.out.println("Room creation body: " + roomResponse.getBody().asString());
     }
 }
