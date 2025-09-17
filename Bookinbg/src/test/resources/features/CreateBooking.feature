@@ -8,7 +8,7 @@ Feature: Test create a room booking
     Given I have a valid login token
     When I send a request to create a room
 
-  @HappyFlow
+  @HappyFlow @hotelBooking @regressionTesting
   Scenario Outline: Create a room booking
     Given User hits endpoint "api/booking"
     When User books the room with the given details
@@ -23,7 +23,7 @@ Feature: Test create a room booking
       | User      | one      | user.one@gmail.com  | 46666895464 | 2025-11-16 | 2025-11-19 |
 
 
-  @InvalidParams
+  @InvalidParams @regressionTesting
   Scenario Outline: Create a room booking with missing data
     Given User hits endpoint "api/booking"
     When User books the room with the given details
@@ -35,7 +35,7 @@ Feature: Test create a room booking
       | firstname | lastname | email               | phone       | checkin  | checkout   |
       |           | five     | user.five@gmail.com | 46645895464 | 2025-09- | 2025-09-19 |
 
-  @MissingMandatoryParams
+  @MissingMandatoryParams @regressionTesting
   Scenario Outline: Create a room booking with missing data
     Given User hits endpoint "api/booking"
     When User books the room with the given details

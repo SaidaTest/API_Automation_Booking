@@ -1,7 +1,7 @@
 
 Feature: Room API Testing
 
-  @HappyFlow
+  @HappyFlow @regressionTesting
   Scenario: Verify login API returns 200 and token
     Given I send a login request with username "admin" and password "password"
     Then I am checking login response should be 200
