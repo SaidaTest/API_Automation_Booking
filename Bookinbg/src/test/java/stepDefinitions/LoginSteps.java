@@ -91,7 +91,7 @@ public class LoginSteps {
         response.prettyPrint();
     }
 
-    @Then("the room should be created successfully")
+    @Then("The room should be created successfully")
     public void the_room_should_be_created_successfully() {
         response.then().statusCode(201);
 

@@ -2,15 +2,21 @@ package stepDefinitions;
 
 import context.TestContext;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import io.restassured.module.jsv.JsonSchemaValidator;
+import io.cucumber.java.en.Then;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
+import static org.junit.Assert.assertEquals;
 
 public class RoomSteps {
 
@@ -45,7 +51,7 @@ public class RoomSteps {
         room.put("accessible", true);
         room.put("description", "API created room");
         room.put("image", "https://www.mwtestconsultancy.co.uk/img/room1.jpg");
-        room.put("roomPrice", 110);
+        room.put("roomPrice", 221);
         room.put("features", new String[]{"TV"});
 
          response = RestAssured.given()
@@ -64,4 +70,40 @@ public class RoomSteps {
         System.out.println("Room creation status: " + response.getStatusCode());
         System.out.println("Room creation body: " + response.getBody().asString());
     }
+
+    @When("I am checking the details of the room by room id {int}")
+    public void i_am_the_details_of_the_room_by_room_id(Integer roomId) {
+             response = RestAssured.given()
+                    .relaxedHTTPSValidation()
+                    .get("https://automationintesting.online/api/room/" + roomId);
+
+            context.setResponse(response);
+
+            System.out.println("➡️ Room Fetch Status: " + response.getStatusCode());
+            System.out.println("➡️ Room Fetch Body: " + response.getBody().asString());
+        }
+
+
+    @Then("I verify response status code should be {int}")
+    public void the_response_status_code_should_be(Integer expectedStatusCode) {
+        assertEquals(expectedStatusCode.intValue(), response.getStatusCode());
+    }
+
+    @Then("I verify the response with json schema {string}")
+    public void validate_the_response_with_json_schema(String schemaFileName) {
+        InputStream schemaStream = getClass().getClassLoader()
+                .getResourceAsStream("D:\\GitHubAPI\\Bookinbg\\src\\test\\resources\\schemas\\getbookingresponseschema.json");
+
+        if (schemaStream == null) {
+            throw new RuntimeException("❌ Schema file not found in classpath!");
+        } else {
+            System.out.println("✅ Schema file loaded successfully.");
+        }
+
+        response.then()
+                .assertThat()
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/" + schemaFileName));
+    }
+
+
 }

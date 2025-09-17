@@ -20,12 +20,12 @@ public class BookingSteps {
         this.context = context; // share context if needed
     }
 
-    @Given("user hits endpoint {string}")
+    @Given("User hits endpoint {string}")
     public void user_hits_endpoint(String endpoint) {
         System.out.println("➡️ Booking API endpoint: " + endpoint);
     }
 
-    @When("user books the room with the given details")
+    @When("User books the room with the given details")
     public void user_books_the_room_with_the_given_details(io.cucumber.datatable.DataTable dataTable) {
         Map<String, String> data = dataTable.asMaps().get(0);
 
@@ -56,7 +56,7 @@ public class BookingSteps {
         response.prettyPrint();
     }
 
-    @Then("the response status code should be {int}")
+    @Then("The response status code should be {int}")
     public void the_response_status_code_should_be(Integer expectedStatusCode) {
         assertEquals(expectedStatusCode.intValue(), response.getStatusCode());
     }
