@@ -29,13 +29,13 @@
 //        this.tokenManager = new TokenManager(context);
 //    }
 //
-////    @Given("I have a valid login token")
-////    public void i_have_a_valid_login_token() {
-////        Response response = context.getResponse();
-////        if (response == null) {
-////            tokenManager.ensureToken();
-////        }
-////    }
+/// /    @Given("I have a valid login token")
+/// /    public void i_have_a_valid_login_token() {
+/// /        Response response = context.getResponse();
+/// /        if (response == null) {
+/// /            tokenManager.ensureToken();
+/// /        }
+/// /    }
 //
 //    @When("I send a request to create a room")
 //    public void i_send_a_request_to_create_a_room() {

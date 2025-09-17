@@ -1,8 +1,11 @@
 package utilities;
 
 import io.restassured.response.Response;
-import static io.restassured.RestAssured.*;
-import java.util.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static io.restassured.RestAssured.given;
 
 public class LoginTest {
     public static void main(String[] args) {

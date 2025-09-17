@@ -1,28 +1,30 @@
 package stepDefinitions;
 
 import context.TestContext;
-import io.cucumber.java.en.*;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-
-import static io.restassured.RestAssured.*;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.*;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoginSteps {
-    public Response response;
-    public static String token;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.*;
 
+public class LoginSteps {
+    public static String token;
+    public Response response;
     public TestContext context = new TestContext();  // initialize directly
+
     public LoginSteps() {
         // default constructor for Cucumber
-        }
+    }
 
     @Given("I send a login request with username {string} and password {string}")
     public void i_send_login_request(String username, String password) {
@@ -30,7 +32,7 @@ public class LoginSteps {
         body.put("username", username);
         body.put("password", password);
 
-         response = given()
+        response = given()
                 .relaxedHTTPSValidation()
                 .header("Content-Type", "application/json")
                 .header("Accept", "application/json")
@@ -41,7 +43,7 @@ public class LoginSteps {
         context.setResponse(response);
         context.setStatusCode(response.getStatusCode());
 
-         token = response.jsonPath().getString("token");
+        token = response.jsonPath().getString("token");
         context.setToken(token);
 
         System.out.println("Status: " + response.getStatusCode());
@@ -82,7 +84,7 @@ public class LoginSteps {
         response = RestAssured.given()
                 .baseUri("https://automationintesting.online")
                 .basePath("/api/room")
-                .header("Authorization", ""+ context.getToken()) // ✅ use token
+                .header("Authorization", "" + context.getToken()) // ✅ use token
                 .contentType(ContentType.JSON)
                 .body(jsonBody)
                 .when()

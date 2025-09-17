@@ -3,16 +3,13 @@ package stepDefinitions;
 import context.TestContext;
 import io.restassured.response.Response;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertNotNull;
 
 public class TokenManager {
-    private final TestContext context;
     public static String token;
+    private final TestContext context;
     public Response response;
+
     public TokenManager(TestContext context) {
         this.context = context;
     }

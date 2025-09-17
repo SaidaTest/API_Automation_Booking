@@ -1,7 +1,9 @@
 package stepDefinitions;
 
 import context.TestContext;
-import io.cucumber.java.en.*;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.module.jsv.JsonSchemaValidator;
@@ -12,14 +14,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 
 public class BookingSteps {
 
     private final TestContext context;
-    private Response response;
     public TokenManager tokenManager;
+    private Response response;
 
     public BookingSteps(TestContext context) {
         this.context = context; // share context if needed
@@ -76,7 +77,7 @@ public class BookingSteps {
     @When("User requests the details of the room by room id")
     public void User_requests_the_details_of_the_room_by_room_id() {
 
-         response = given()
+        response = given()
                 .relaxedHTTPSValidation()
                 // If needed, include the cookie for auth:
                 .cookie("token", context.getToken())
@@ -176,6 +177,7 @@ public class BookingSteps {
                 .assertThat()
                 .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/" + schemaFileName));
     }
+
     @When("I update booking with id {int}")
     public void i_update_booking_with_id(Integer bookingId) {
         System.out.println("🔄 Updating booking with ID: " + bookingId);
@@ -214,6 +216,7 @@ public class BookingSteps {
         String updatedName = response.jsonPath().getString("firstname");
         System.out.println("✅ Booking updated. New firstname: " + updatedName);
     }
+
     @When("The user deletes booking id 2")
     public void the_user_deletes_booking_id_7() {
         String token = context.getToken();
@@ -236,7 +239,6 @@ public class BookingSteps {
     public void the_booking_should_be_deleted_successfully() {
         response.then().statusCode(200); // API usually returns 200 or 204 after deletion
     }
-
 
 
 }

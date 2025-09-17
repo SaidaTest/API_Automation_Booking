@@ -1,0 +1,31 @@
+-------------------------------------------------------------------------------
+Test set: runners.TestRunner
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 32.59 s <<< FAILURE! -- in runners.TestRunner
+Test create a room booking.Create a room booking #1 -- Time elapsed: 10.06 s <<< FAILURE!
+java.lang.AssertionError: expected:<200> but was:<500>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:647)
+	at org.junit.Assert.assertEquals(Assert.java:633)
+	at stepDefinitions.BookingSteps.the_response_status_code_should_be(BookingSteps.java:67)
+	at ✽.The response status code should be 200(file:///C:/API_Automation_Booking170926/Booking/src/test/resources/features/CreateBooking.feature:17)
+
+Test create a room booking.Create a room booking #2 -- Time elapsed: 4.802 s <<< FAILURE!
+java.lang.AssertionError: expected:<200> but was:<500>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:647)
+	at org.junit.Assert.assertEquals(Assert.java:633)
+	at stepDefinitions.BookingSteps.the_response_status_code_should_be(BookingSteps.java:67)
+	at ✽.The response status code should be 200(file:///C:/API_Automation_Booking170926/Booking/src/test/resources/features/CreateBooking.feature:17)
+
+Test create a room booking.Create a room booking #3 -- Time elapsed: 5.450 s <<< FAILURE!
+java.lang.AssertionError: expected:<200> but was:<500>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:647)
+	at org.junit.Assert.assertEquals(Assert.java:633)
+	at stepDefinitions.BookingSteps.the_response_status_code_should_be(BookingSteps.java:67)
+	at ✽.The response status code should be 200(file:///C:/API_Automation_Booking170926/Booking/src/test/resources/features/CreateBooking.feature:17)
+

@@ -1,0 +1,9 @@
+{
+  "roomName": "009",
+  "type": "Single",
+  "accessible": true,
+  "description": "Please enter a description for this room",
+  "image": "https://www.mwtestconsultancy.co.uk/img/room1.jpg",
+  "roomPrice": "250",
+  "features": ["TV"]
+}
