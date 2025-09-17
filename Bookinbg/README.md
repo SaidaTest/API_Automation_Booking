@@ -33,7 +33,7 @@
 
 ## Installation
 
-Clone the repository: git clone https://github.com/SankarGanesan898/HotelBooking.git
+Clone the repository: git clone https://github.com/SaidaTest/API_Automation_Booking.git
 
 
 
